@@ -50,6 +50,11 @@ spawn(*followerA_pose, "b01001406FollowerA")
 followerB_pose = random_pose()
 spawn(*followerB_pose, "b01001406FollowerB")
 
+# store initial poses
+rospy.set_param("/b01001406Leader_initial_pose", leader_pose)
+rospy.set_param("/b01001406FollowerA_initial_pose", followerA_pose)
+rospy.set_param("/b01001406FollowerB_initial_pose", followerB_pose)
+
 # set pen colour for each turtle so I know which one is which when they move around
 # leader is red, follower A is blue and follower B is green
 def set_pen_colour(name, r, g, b):
