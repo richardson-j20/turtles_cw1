@@ -1,12 +1,83 @@
 <launch>
-<node pkg="turtlesim" type="turtlesim_node" name="turtlesim"/>
-<node pkg="com760cw1_b01001406" type="startup.py" name="startup" output="screen"/>
 
-<node pkg="com760cw1_b01001406" type="leader_instruction_pub.py" name="leader_pub" output="screen"/>
+  <!-- Turtlesim -->
+  <node pkg="turtlesim"
+        type="turtlesim_node"
+        name="turtlesim"/>
 
-  <!-- Run follower listener twice (anonymous=true avoids name clash) -->
-  <node pkg="com760cw1_b01001406" type="follower_instruction_sub.py" name="followerA_sub" output="screen"/>
-  <node pkg="com760cw1_b01001406" type="follower_instruction_sub.py" name="followerB_sub" output="screen"/>
-  
-<node pkg="turtlesim" type="turtle_teleop_key" name="teleop_key" launch-prefix="gnome-terminal --"/>
+  <!-- Startup (spawn turtles + set pens) -->
+  <node pkg="com760cw1_b01001406"
+        type="startup.py"
+        name="startup"
+        output="screen"/>
+
+  <!-- Leader publisher -->
+  <node pkg="com760cw1_b01001406"
+      type="leader_controller.py"
+      name="leader_controller"
+      output="screen"/>
+
+  <!-- Followers -->
+  <node pkg="com760cw1_b01001406"
+      type="follower_controller.py"
+      name="followerA_controller"
+      output="screen">
+  <param name="role" value="A"/>
+  <param name="turtle_name" value="b01001406FollowerA"/>
+</node>
+
+<node pkg="com760cw1_b01001406"
+      type="follower_controller.py"
+      name="followerB_controller"
+      output="screen">
+  <param name="role" value="B"/>
+  <param name="turtle_name" value="b01001406FollowerB"/>
+</node>
+
+  <!-- TF Broadcasters -->
+
+  <node pkg="com760cw1_b01001406"
+        type="turtle_tf_broadcaster.py"
+        name="leader_tf"
+        output="screen">
+    <param name="turtle" value="b01001406Leader"/>
+  </node>
+
+  <node pkg="com760cw1_b01001406"
+        type="turtle_tf_broadcaster.py"
+        name="followerA_tf"
+        output="screen">
+    <param name="turtle" value="b01001406FollowerA"/>
+  </node>
+
+  <node pkg="com760cw1_b01001406"
+        type="turtle_tf_broadcaster.py"
+        name="followerB_tf"
+        output="screen">
+    <param name="turtle" value="b01001406FollowerB"/>
+  </node>
+
+  <!-- GoToGoal Servers -->
+
+  <node pkg="com760cw1_b01001406"
+      type="go_to_goal_server.py"
+      name="leader_server"
+      output="screen">
+  <param name="turtle_name" value="b01001406Leader"/>
+</node>
+
+<node pkg="com760cw1_b01001406"
+      type="go_to_goal_server.py"
+      name="followerA_server"
+      output="screen">
+  <param name="turtle_name" value="b01001406FollowerA"/>
+</node>
+
+<node pkg="com760cw1_b01001406"
+      type="go_to_goal_server.py"
+      name="followerB_server"
+      output="screen">
+  <param name="turtle_name" value="b01001406FollowerB"/>
+</node>
+
 </launch>
